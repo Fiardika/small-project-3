@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landing-page-deployment
+  labels:
+    app: landing-page-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: landing-page-deployment
+  template:
+    metadata:
+      labels:
+        app: landing-page-deployment
+    spec:
+      containers:
+      - name: landing-page-deployment
+        image: fiardika/landing-page-fiar:1.1
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-deployment
+  labels:
+    app: wordpress-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-deployment
+  template:
+    metadata:
+      labels:
+        app: wordpress-deployment
+    spec:
+      containers:
+      - name: wordpress-deployment
+        image: fiardika/wordpress-fiar:1.0
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pesbuk-deployment
+  labels:
+    app: pesbuk-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pesbuk-deployment
+  template:
+    metadata:
+      labels:
+        app: pesbuk-deployment
+    spec:
+      volumes:
+        - name: config-secret
+          configMap:
+            name: p-fb-configmap-secret
+      containers:
+      - name: pesbuk-deployment
+        image: fiardika/sosmed-fiar:1.0
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: config-secret
+          mountPath: "/var/www/html/config.php"
+          subPath: "config.php"
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: p-secret-fb
+              key: DB_USER
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: p-secret-fb
+              key: DB_PASS

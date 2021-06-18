@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: pesbuk-staging.fiardika.xyz
+    http:
+      paths:
+        - backend:
+            serviceName: pesbuk-service
+            servicePort: 80
+  - host: fiardika-staging.fiardika.xyz
+    http:
+      paths:
+        - backend:
+            serviceName: landing-page-service
+            servicePort: 80
+  - host: blog-staging.fiardika.xyz
+    http:
+      paths:
+        - backend:
+            serviceName: wordpress-service
+            servicePort: 80

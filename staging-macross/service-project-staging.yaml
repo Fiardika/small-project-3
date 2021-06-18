@@ -1,0 +1,39 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: landing-page-service
+spec:
+  selector:
+    app: landing-page-deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: wordpress-service
+spec:
+  selector:
+    app: wordpress-deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: pesbuk-service
+spec:
+  selector:
+    app: pesbuk-deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
